@@ -1,0 +1,26 @@
+from transformers import pipeline
+
+def summarize_text(text, max_length=120, min_length=30):
+    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
+
+    return summary[0]['summary_text']
+
+if __name__ == "__main__":
+    print("📝 Enter the text you want to summarize (press Enter twice to finish):")
+    input_lines = []
+    while True:
+        line = input()
+        if line == "":
+            break
+        input_lines.append(line)
+
+    input_text = "\n".join(input_lines)
+
+    if len(input_text.strip()) == 0:
+        print("⚠️ No text entered. Please try again.")
+    else:
+        print("\n🔍 Generating summary...\n")
+        summary_result = summarize_text(input_text)
+        print("📋 Summary:\n")
+        print(summary_result)
